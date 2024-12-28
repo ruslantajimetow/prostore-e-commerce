@@ -3,8 +3,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import ProductPrice from './product-price';
+import { Product } from '@/types';
 
-export default function ProductCard({ product }: { product: any }) {
+export default function ProductCard({ product }: { product: Product }) {
   return (
     <Card className="w-full shadow-lg max-w-sm mx-auto overflow-hidden">
       <CardHeader className="p-0 items-center">

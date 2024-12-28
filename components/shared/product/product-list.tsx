@@ -1,13 +1,15 @@
 'use client';
 
+import { z } from 'zod';
 import ProductCard from './product-card';
+import { Product } from '@/types';
 
 export default function ProductList({
   data,
   title,
   limit,
 }: {
-  data: any;
+  data: Product[];
   title?: string;
   limit?: number;
 }) {
