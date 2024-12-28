@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import ProductPrice from './product-price';
 
 export default function ProductCard({ product }: { product: any }) {
   return (
@@ -25,7 +26,7 @@ export default function ProductCard({ product }: { product: any }) {
         <div className="flex-between">
           <p>{product.rating} Stars</p>
           {product.stock > 0 ? (
-            <p className="font-bold">{product.price}</p>
+            <ProductPrice value={+product.price} />
           ) : (
             <p className="text-destructive">Out Of Stock</p>
           )}
