@@ -1,5 +1,7 @@
 'use client';
 
+import ProductCard from './product-card';
+
 export default function ProductList({
   data,
   title,
@@ -16,7 +18,7 @@ export default function ProductList({
       {data.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {limitedData.map((product: any, i: number) => {
-            return <div key={i}>{product.name}</div>;
+            return <ProductCard product={product} key={i} />;
           })}
         </div>
       ) : (
