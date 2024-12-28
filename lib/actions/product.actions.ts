@@ -1,8 +1,6 @@
 'use server';
-
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/db/prisma';
 import { prismaToPlain } from '../utils';
-const prisma = new PrismaClient();
 
 export async function getProducts() {
   const data = await prisma.product.findMany({
