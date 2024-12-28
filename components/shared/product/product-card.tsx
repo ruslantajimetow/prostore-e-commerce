@@ -6,7 +6,7 @@ import ProductPrice from './product-price';
 
 export default function ProductCard({ product }: { product: any }) {
   return (
-    <Card className="w-full max-w-sm mx-auto">
+    <Card className="w-full shadow-lg max-w-sm mx-auto overflow-hidden">
       <CardHeader className="p-0 items-center">
         <Link href={`/product/${product.slug}`}>
           <Image
