@@ -3,11 +3,11 @@ import loader from '@/assets/loader.gif';
 
 export default function LoadingPage() {
   return (
-    <div className="w-screen flex-center mt-16">
+    <div className="w-full flex-center mt-16">
       <Image
         src={loader}
-        height={150}
-        width={150}
+        height={60}
+        width={60}
         alt="Loading..."
         priority={true}
       />
