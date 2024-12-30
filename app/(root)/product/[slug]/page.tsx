@@ -4,10 +4,11 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { getProductByslug } from '@/lib/actions/product.actions';
-import { Params } from 'next/dist/server/request/params';
 import { notFound } from 'next/navigation';
 
-export default async function ProductDetail(props: { params: Params }) {
+export default async function ProductDetail(props: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = (await props.params) as { slug: string };
   const product = await getProductByslug(slug);
   if (!product) notFound();

@@ -6,7 +6,6 @@ import { Product } from '@/types';
 export default function ProductList({
   data,
   title,
-  limit,
 }: {
   data: Product[];
   title?: string;

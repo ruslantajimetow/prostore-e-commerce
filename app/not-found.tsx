@@ -16,7 +16,7 @@ export default function NotFoundPage() {
       />
       <div className="p-6 w-1/3 text-center shadow-md rounded-lg mt-3">
         <h1 className="h1-bold">Not Found</h1>
-        <p className="text-destructive mt-4">Couldn't find requested page</p>
+        <p className="text-destructive mt-4">Could not find requested page</p>
         <Button
           variant="outline"
           className="mt-4"
