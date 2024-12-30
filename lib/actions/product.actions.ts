@@ -1,13 +1,25 @@
 'use server';
 import { prisma } from '@/db/prisma';
-import { prismaToPlain } from '../utils';
 
+// Get all products from DB
 export async function getProducts() {
   const data = await prisma.product.findMany({
     take: 4,
+    where: {
+      stock: {
+        gt: 5,
+      },
+    },
     orderBy: {
       createdAt: 'desc',
     },
   });
-  return prismaToPlain(data);
+  return JSON.parse(JSON.stringify(data));
+}
+
+// Get a product by its slug
+export async function getProductByslug(slug: string) {
+  return await prisma.product.findFirst({
+    where: { slug: slug },
+  });
 }
