@@ -1,23 +1,23 @@
+import ProductImages from '@/components/shared/product/product-images';
 import ProductPrice from '@/components/shared/product/product-price';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { getProductByslug } from '@/lib/actions/product.actions';
-import { Product } from '@/types';
 import { Params } from 'next/dist/server/request/params';
 import { notFound } from 'next/navigation';
-import React from 'react';
 
 export default async function ProductDetail(props: { params: Params }) {
   const { slug } = (await props.params) as { slug: string };
-
   const product = await getProductByslug(slug);
   if (!product) notFound();
   return (
     <>
       <section>
-        <div className="grid grid-cols-1 md:grid-cols-5">
-          <div className="col-span-2">{/* Product Image */}</div>
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+          <div className="col-span-2">
+            <ProductImages images={product.images} />
+          </div>
           <div className="col-span-2 flex flex-col gap-6">
             <p>
               {product?.brand} {product?.category}
@@ -41,7 +41,10 @@ export default async function ProductDetail(props: { params: Params }) {
               <CardContent className="p-4">
                 <div className="mb-2 flex justify-between">
                   <p>Price</p>
-                  <ProductPrice value={Number(product?.price)} />
+                  <ProductPrice
+                    value={Number(product?.price)}
+                    className="font-semibold"
+                  />
                 </div>
                 <div className="mb-2 flex justify-between">
                   <p>Stock</p>

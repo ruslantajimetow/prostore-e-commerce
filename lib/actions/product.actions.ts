@@ -4,12 +4,6 @@ import { prisma } from '@/db/prisma';
 // Get all products from DB
 export async function getProducts() {
   const data = await prisma.product.findMany({
-    take: 4,
-    where: {
-      stock: {
-        gt: 5,
-      },
-    },
     orderBy: {
       createdAt: 'desc',
     },
