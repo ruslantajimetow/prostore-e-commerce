@@ -10,12 +10,19 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import CredentialsSignInForm from './credentials-signin-form';
+import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'Sign In',
 };
 
-export default function SignInPage() {
+export default async function SignInPage() {
+  const session = await auth();
+
+  if (session) {
+    return redirect('/');
+  }
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader className="flex-center space-y-4">
