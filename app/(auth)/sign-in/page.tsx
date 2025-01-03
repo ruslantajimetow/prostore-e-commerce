@@ -17,11 +17,17 @@ export const metadata: Metadata = {
   title: 'Sign In',
 };
 
-export default async function SignInPage() {
+export default async function SignInPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ callbackUrl: string }>;
+}) {
   const session = await auth();
 
+  const { callbackUrl } = await searchParams;
+
   if (session) {
-    return redirect('/');
+    return redirect(callbackUrl || '/');
   }
   return (
     <Card className="w-full max-w-md mx-auto">
