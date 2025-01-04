@@ -14,7 +14,7 @@ import Link from 'next/link';
 
 export default async function UserButton() {
   const session = await auth();
-  const firstLetter = session?.user?.name?.charAt(0);
+  const firstLetter = session?.user?.name?.charAt(0).toUpperCase();
   return (
     <div>
       {session ? (
