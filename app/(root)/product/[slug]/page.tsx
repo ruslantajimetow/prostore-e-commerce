@@ -1,7 +1,7 @@
+import AddTocart from '@/components/shared/product/add-to-cart';
 import ProductImages from '@/components/shared/product/product-images';
 import ProductPrice from '@/components/shared/product/product-price';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { getProductByslug } from '@/lib/actions/product.actions';
 import { notFound } from 'next/navigation';
@@ -56,7 +56,18 @@ export default async function ProductDetail(props: {
                   )}
                 </div>
                 <div className="flex-center">
-                  <Button className="w-full">Add To Cart</Button>
+                  {product.stock > 0 && (
+                    <AddTocart
+                      item={{
+                        productId: product.id,
+                        name: product.name,
+                        slug: product.slug,
+                        qty: 1,
+                        image: product.images![0],
+                        price: product.price,
+                      }}
+                    />
+                  )}
                 </div>
               </CardContent>
             </Card>
