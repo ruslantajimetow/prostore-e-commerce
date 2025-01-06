@@ -29,6 +29,7 @@ export default function AddTocart({
         toast({
           variant: 'destructive',
           description: res.message,
+          duration: 3000,
         });
         return;
       }
@@ -46,6 +47,7 @@ export default function AddTocart({
             Go to Cart
           </ToastAction>
         ),
+        duration: 5000,
       });
     });
   };
@@ -59,6 +61,7 @@ export default function AddTocart({
       toast({
         variant: res.success ? 'default' : 'destructive',
         description: res.message,
+        duration: 3000,
       });
     });
   };
