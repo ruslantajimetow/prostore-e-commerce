@@ -70,7 +70,7 @@ export const config = {
       }
       return token;
     },
-    authorized({ request, auth }: any) {
+    async authorized({ request, auth }: any) {
       // Check for session cookie
       if (!request.cookies.get('sessionCartId')) {
         const sessionCartId = crypto.randomUUID();
