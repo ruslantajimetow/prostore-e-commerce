@@ -5,7 +5,6 @@ import { prisma } from '@/db/prisma';
 import CredentialProvider from 'next-auth/providers/credentials';
 import { compareSync } from 'bcrypt-ts-edge';
 import { NextResponse } from 'next/server';
-
 export const config = {
   pages: {
     signIn: '/sign-in',
@@ -52,17 +51,14 @@ export const config = {
       session.user.id = token.sub;
       session.user.role = token.role;
       session.user.name = token.name;
-
       if (trigger === 'update') {
         session.user.name = user.name;
       }
-
       return session;
     },
     async jwt({ token, user, trigger, session }: any) {
       if (user) {
         token.role = user.role;
-
         if (user.name === 'NO_NAME') {
           const name = user.email.split('@')[0];
           token.name = name;
@@ -72,26 +68,19 @@ export const config = {
           });
         }
       }
-
       return token;
     },
     authorized({ request, auth }: any) {
       // Check for session cookie
       if (!request.cookies.get('sessionCartId')) {
         const sessionCartId = crypto.randomUUID();
-
         const newRequestHeaders = new Headers(request.headers);
-
         const response = NextResponse.next({
           request: {
             headers: newRequestHeaders,
           },
         });
-
-        //set new Session Id cart cookie
-
         response.cookies.set('sessionCartId', sessionCartId);
-
         return response;
       } else {
         return true;
