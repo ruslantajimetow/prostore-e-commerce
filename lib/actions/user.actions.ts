@@ -11,7 +11,6 @@ import { hashSync } from 'bcrypt-ts-edge';
 import { prisma } from '@/db/prisma';
 import { formatError } from '../utils';
 import { ShippingAddress } from '@/types';
-import { Session } from 'next-auth';
 
 export const signInAction = async (prevState: unknown, formData: FormData) => {
   try {
