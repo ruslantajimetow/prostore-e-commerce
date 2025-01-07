@@ -46,3 +46,21 @@ export const round2 = (value: string | number) => {
     throw new Error('The type of the value be the string or number');
   }
 };
+
+//Currency Formatter
+const CURRENCY_FORMATTER = new Intl.NumberFormat('en-Us', {
+  currency: 'USD',
+  style: 'currency',
+  maximumFractionDigits: 2,
+});
+
+// currency formatter function
+export const formatCurrency = (amount: number | string | null) => {
+  if (typeof amount === 'number') {
+    return CURRENCY_FORMATTER.format(amount);
+  } else if (typeof amount === 'string') {
+    return CURRENCY_FORMATTER.format(Number(amount));
+  } else {
+    return 'NaN';
+  }
+};
