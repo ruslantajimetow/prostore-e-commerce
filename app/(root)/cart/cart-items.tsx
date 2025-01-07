@@ -60,7 +60,9 @@ export default function CartItems({ cart }: { cart?: Cart }) {
                             width={50}
                             height={50}
                           />
-                          <span className="ml-2">{item.name}</span>
+                          <span className="hidden sm:inline-block ml-2">
+                            {item.name}
+                          </span>
                         </Link>
                       </TableCell>
                       <TableCell className="flex lg:flex-row md:flex-col-reverse items-center gap-2 justify-center">
@@ -121,7 +123,7 @@ export default function CartItems({ cart }: { cart?: Cart }) {
               </TableBody>
             </Table>
           </div>
-          <Card>
+          <Card className="max-h-40">
             <CardContent className="p-4 gap-4">
               <div className="flex lg:flex-row md:flex-col justify-between mb-4">
                 <span className="text-lg">
