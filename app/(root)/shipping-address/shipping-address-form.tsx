@@ -20,6 +20,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Loader } from 'lucide-react';
 import { updateUserAddress } from '@/lib/actions/user.actions';
+import CheckOutSteps from '@/components/shared/check-out-steps';
 
 export default function ShippingAddressForm({
   address,
@@ -56,6 +57,7 @@ export default function ShippingAddressForm({
 
   return (
     <>
+      <CheckOutSteps current={1} />
       <div className="max-w-md mx-auto space-y-4">
         <h1 className="h2-bold mt-3">Shipping Address Form</h1>
         <p className="text-sm text-muted-foreground">
