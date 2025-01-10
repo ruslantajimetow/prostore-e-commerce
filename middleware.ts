@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { auth } from './auth';
 
 export async function middleware(req: any) {
   const protectedPaths = [
@@ -12,12 +11,16 @@ export async function middleware(req: any) {
     /\/admin/,
   ];
 
-  // get path name from req object
-  const { pathname } = req.nextUrl;
-  const session = await auth();
+  const url = req.nextUrl.clone();
 
-  if (!session && protectedPaths.some((p) => p.test(pathname)))
-    return NextResponse.redirect(new URL('/sign-in', req.nextUrl.origin));
+  const isProtected = protectedPaths.some((p) => p.test(url.pathname));
+
+  const auth = req.cookies.get('authjs.session-token');
+
+  if (!auth && isProtected) {
+    url.pathname = '/sign-in';
+    return NextResponse.redirect(url);
+  }
 
   const sessionCartId = req.cookies.get('sessionCartId') || crypto.randomUUID();
   const response = NextResponse.next();
