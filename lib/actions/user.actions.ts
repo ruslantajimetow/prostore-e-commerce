@@ -1,6 +1,7 @@
 'use server';
 
 import {
+  paymentMethodSchema,
   shippingAddressSchema,
   signInFormSchema,
   signUpFormSchema,
@@ -11,6 +12,7 @@ import { hashSync } from 'bcrypt-ts-edge';
 import { prisma } from '@/db/prisma';
 import { formatError } from '../utils';
 import { ShippingAddress } from '@/types';
+import { z } from 'zod';
 
 export const signInAction = async (prevState: unknown, formData: FormData) => {
   try {
@@ -99,6 +101,37 @@ export const updateUserAddress = async (data: ShippingAddress) => {
     return {
       success: true,
       message: 'User address updated successfully',
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    };
+  }
+};
+
+// Update user's payment method
+
+export const updateUserPaymentMethod = async (
+  data: z.infer<typeof paymentMethodSchema>
+) => {
+  try {
+    const session = await auth();
+    const currentUser = await prisma.user.findFirst({
+      where: { id: session?.user?.id },
+    });
+    if (!currentUser) throw new Error('No User Found');
+
+    const paymentMethod = paymentMethodSchema.parse(data);
+
+    await prisma.user.update({
+      where: { id: currentUser.id },
+      data: { paymantMethod: paymentMethod.type },
+    });
+
+    return {
+      success: true,
+      message: 'Payment Method updated successfully',
     };
   } catch (error) {
     return {
