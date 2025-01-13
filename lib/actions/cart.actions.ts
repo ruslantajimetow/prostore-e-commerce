@@ -1,6 +1,6 @@
 'use server';
 
-import { CartItem } from '@/types';
+import { Cart, CartItem } from '@/types';
 import { formatError, round2 } from '../utils';
 import { cookies } from 'next/headers';
 import { auth } from '@/auth';

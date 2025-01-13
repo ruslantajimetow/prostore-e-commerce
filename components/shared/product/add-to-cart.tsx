@@ -40,7 +40,7 @@ export default function AddTocart({
         description: res.message,
         action: (
           <ToastAction
-            className="bg-secondary  hover:bg-primary"
+            className="bg-secondary"
             altText="Go to Cart"
             onClick={() => router.push('/cart')}
           >
