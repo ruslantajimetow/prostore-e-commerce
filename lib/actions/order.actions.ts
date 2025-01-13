@@ -4,7 +4,7 @@ import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import { formatError } from '../utils';
 import { auth } from '@/auth';
 import { getMyCart } from './cart.actions';
-import { Cart, CartItem } from '@/types';
+import { CartItem } from '@/types';
 import { getUserById } from './user.actions';
 import { insertOrderSceham } from '../validators';
 import { prisma } from '@/db/prisma';
