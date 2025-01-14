@@ -4,7 +4,7 @@ import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import { formatError } from '../utils';
 import { auth } from '@/auth';
 import { getMyCart } from './cart.actions';
-import { CartItem } from '@/types';
+import { CartItem, Order } from '@/types';
 import { getUserById } from './user.actions';
 import { insertOrderSceham } from '../validators';
 import { prisma } from '@/db/prisma';
@@ -47,7 +47,7 @@ export async function createOrder() {
     const order = insertOrderSceham.parse({
       userId: user.id,
       shippingAddress: user.address,
-      paymantMethod: user.paymantMethod,
+      paymentMethod: user.paymantMethod,
       itemsPrice: cart.itemsPrice,
       taxPrice: cart.taxPrice,
       shippingPrice: cart.shippingPrice,
@@ -84,7 +84,7 @@ export async function createOrder() {
     return {
       success: true,
       message: 'Order Created',
-      redirectTo: `order/${insertedOrderId}`,
+      redirectTo: `/order/${insertedOrderId}`,
     };
   } catch (error) {
     if (isRedirectError(error)) throw error;
@@ -94,3 +94,15 @@ export async function createOrder() {
     };
   }
 }
+
+export const getOrderById = async (id: string) => {
+  const data = await prisma.order.findFirst({
+    where: { id },
+    include: {
+      orderitems: true,
+      user: { select: { name: true, email: true } },
+    },
+  });
+
+  return JSON.parse(JSON.stringify(data)) as Order;
+};
