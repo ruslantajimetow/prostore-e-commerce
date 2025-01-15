@@ -15,7 +15,11 @@ export async function middleware(req: any) {
 
   const isProtected = protectedPaths.some((p) => p.test(url.pathname));
 
-  const auth = req.cookies.get('authjs.session-token');
+  const token =
+    process.env.NODE_ENV === 'production'
+      ? process.env.SECURE_AUTH_COOKIE
+      : 'authjs.session-token';
+  const auth = req.cookies.get(token);
 
   if (!auth && isProtected) {
     url.pathname = '/sign-in';
