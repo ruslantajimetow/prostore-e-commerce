@@ -1,13 +1,12 @@
 'use server';
 
-import { CartItem } from '@/types';
+import { Cart, CartItem } from '@/types';
 import { formatError, round2 } from '../utils';
 import { cookies } from 'next/headers';
 import { auth } from '@/auth';
 import { prisma } from '@/db/prisma';
 import { cartItemSchema, insertCartSchema } from '../validators';
 import { revalidatePath } from 'next/cache';
-import { Prisma } from '@prisma/client';
 
 const calcPrices = (items: CartItem[]) => {
   const itemsPrice = round2(
@@ -80,7 +79,7 @@ export const addItemToCart = async (data: CartItem) => {
       await prisma.cart.update({
         where: { id: cart.id },
         data: {
-          items: cart.items as Prisma.CartUpdateitemsInput,
+          items: cart.items as CartItem[],
           ...calcPrices(cart.items as CartItem[]),
         },
       });
@@ -117,9 +116,9 @@ export const getMyCart = async () => {
     where: userId ? { userId } : { sessionCartId },
   });
 
-  if (!cart) return undefined;
+  if (!cart) throw new Error('No cart Found');
 
-  return JSON.parse(
+  const myCart = JSON.parse(
     JSON.stringify({
       ...cart,
       items: cart.items,
@@ -129,6 +128,8 @@ export const getMyCart = async () => {
       taxPrice: cart.taxPrice,
     })
   );
+
+  return myCart as Cart;
 };
 
 // Remove cart item functionality
@@ -163,7 +164,7 @@ export const removeCartItem = async (productId: string) => {
     await prisma.cart.update({
       where: { id: cart.id },
       data: {
-        items: cart.items as Prisma.CartUpdateitemsInput,
+        items: cart.items as CartItem[],
         ...calcPrices(cart.items as CartItem[]),
       },
     });
