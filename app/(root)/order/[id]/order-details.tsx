@@ -14,8 +14,25 @@ import { formatCurrency, formatDateAndTime, formatId } from '@/lib/utils';
 import { Order, OrderItem } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
+import {
+  PayPalButtons,
+  PayPalScriptProvider,
+  usePayPalScriptReducer,
+} from '@paypal/react-paypal-js';
 
-export default function OrderDetails({ order }: { order: Order }) {
+import {
+  createPayPalOrder,
+  approvePayPalOrder,
+} from '@/lib/actions/order.actions';
+import { useToast } from '@/hooks/use-toast';
+
+export default function OrderDetails({
+  order,
+  paypalClientId,
+}: {
+  order: Order;
+  paypalClientId: string;
+}) {
   const {
     id,
     shippingAddress,
@@ -25,11 +42,47 @@ export default function OrderDetails({ order }: { order: Order }) {
     taxPrice,
     totalPrice,
     paymentMethod,
-    isPaidd,
+    isPaid,
     isdelivere,
     paidAt,
     deliveredAt,
   } = order;
+
+  const { toast } = useToast();
+  const PrinLoadingState = () => {
+    const [{ isPending, isRejected }] = usePayPalScriptReducer();
+    let status = '';
+    if (isPending) {
+      status = 'Loading PayPal...';
+    } else if (isRejected) {
+      status = 'Error Loading PayPal';
+    }
+
+    return status;
+  };
+
+  const handleCreatPayPalOrder = async () => {
+    const res = await createPayPalOrder(id);
+
+    if (!res.success) {
+      toast({
+        variant: 'destructive',
+        description: res.message,
+      });
+    }
+
+    return res.data;
+  };
+
+  const handleApprovePayPalOrder = async (data: { orderID: string }) => {
+    const res = await approvePayPalOrder(order.id, data);
+
+    toast({
+      variant: res.success ? 'default' : 'destructive',
+      description: res.message,
+    });
+  };
+
   return (
     <>
       <h1 className="py-4 text-2xl">Order {formatId(id)}</h1>
@@ -39,7 +92,7 @@ export default function OrderDetails({ order }: { order: Order }) {
             <CardContent className="p-4 gap-4">
               <h2 className="text-xl pb-4">PaymentMethod</h2>
               <p className="mb-2">{paymentMethod}</p>
-              {isPaidd ? (
+              {isPaid ? (
                 <Badge variant="secondary">
                   Paid at {formatDateAndTime(paidAt!).dateTime}
                 </Badge>
@@ -126,6 +179,19 @@ export default function OrderDetails({ order }: { order: Order }) {
                 <div>Total</div>
                 <div>{formatCurrency(totalPrice)}</div>
               </div>
+              {/* Paypal Payment */}
+
+              {!isPaid && paymentMethod === 'PayPal' && (
+                <div>
+                  <PayPalScriptProvider options={{ clientId: paypalClientId }}>
+                    <PrinLoadingState />
+                    <PayPalButtons
+                      createOrder={handleCreatPayPalOrder}
+                      onApprove={handleApprovePayPalOrder}
+                    />
+                  </PayPalScriptProvider>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>

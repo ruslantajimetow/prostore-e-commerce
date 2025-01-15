@@ -17,7 +17,10 @@ export default async function OrderPage(props: {
   if (!order) notFound();
   return (
     <>
-      <OrderDetails order={order} />
+      <OrderDetails
+        order={order}
+        paypalClientId={process.env.PAYPAL_CLIENT_ID || 'sb'}
+      />
     </>
   );
 }
