@@ -116,7 +116,7 @@ export const getMyCart = async () => {
     where: userId ? { userId } : { sessionCartId },
   });
 
-  if (!cart) throw new Error('No cart Found');
+  if (!cart) return undefined;
 
   const myCart = JSON.parse(
     JSON.stringify({
