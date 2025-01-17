@@ -10,6 +10,7 @@ import { insertOrderSceham } from '../validators';
 import { prisma } from '@/db/prisma';
 import { paypal } from '../paypal';
 import { revalidatePath } from 'next/cache';
+import { PAGE_SIZE } from '../constants';
 
 // Create order and orderitem
 
@@ -58,7 +59,7 @@ export async function createOrder() {
 
     const insertedOrderId = await prisma.$transaction(async (tx) => {
       const insertedOrder = await tx.order.create({
-        data: order,
+        data: { ...order, createdAt: new Date() },
       });
 
       for (const item of cart.items as CartItem[]) {
@@ -255,3 +256,33 @@ async function updateOrderToPaid({
 
   return updatedOrder;
 }
+
+// Get user Orders
+
+export const getUserOrders = async ({
+  limit = PAGE_SIZE,
+  page,
+}: {
+  limit?: number;
+  page: number;
+}) => {
+  const session = await auth();
+
+  if (!session) throw new Error('No Session');
+
+  const data = await prisma.order.findMany({
+    where: { userId: session.user?.id },
+    orderBy: { createdAt: 'desc' },
+    take: limit,
+    skip: (page - 1) * limit,
+  });
+
+  const dataCount = await prisma.order.count({
+    where: { id: session.user?.id },
+  });
+
+  return {
+    data,
+    totalPages: Math.ceil(dataCount / limit),
+  };
+};

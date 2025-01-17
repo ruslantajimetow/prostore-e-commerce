@@ -21,7 +21,10 @@ export default function MainNav({
 }: React.HtmlHTMLAttributes<HTMLElement>) {
   const pathName = usePathname();
   return (
-    <nav className={cn('flex items-center space-x-4 lg:space-x-6', className)}>
+    <nav
+      className={cn('flex items-center space-x-4 lg:space-x-6', className)}
+      {...props}
+    >
       {links.map((link, i) => (
         <Link
           key={i}

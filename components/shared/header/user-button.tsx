@@ -42,6 +42,16 @@ export default async function UserButton() {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <Link href="/user/profile" className="w-full px-2">
+                  Profile
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href="/user/orders" className="w-full px-2">
+                  User Orders
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuItem className="p-2 mb-1">
                 <form action={signOutAction} className="w-full">
                   <Button
