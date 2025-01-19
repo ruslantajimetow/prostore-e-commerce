@@ -1,3 +1,4 @@
+import Pagination from '@/components/shared/pagination';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -70,6 +71,9 @@ export default async function UserOrdersPage(props: {
             ))}
           </TableBody>
         </Table>
+        {orders.totalPages >= 1 && (
+          <Pagination page={Number(page) || 1} totalPages={orders.totalPages} />
+        )}
       </div>
     </div>
   );

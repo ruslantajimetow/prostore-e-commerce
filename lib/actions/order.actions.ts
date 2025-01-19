@@ -278,8 +278,9 @@ export const getUserOrders = async ({
   });
 
   const dataCount = await prisma.order.count({
-    where: { id: session.user?.id },
+    where: { userId: session.user?.id },
   });
+  console.log(dataCount);
 
   return {
     data,
