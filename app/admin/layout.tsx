@@ -3,8 +3,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Menu from '@/components/shared/header/menu';
 import MainNav from './main-nav';
+import { Input } from '@/components/ui/input';
 
-export default function AdminLayout({
+export default function UserLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -24,6 +25,13 @@ export default function AdminLayout({
             </Link>
             <MainNav className="mx-5" />
             <div className="ml-auto items-center flex space-x-4">
+              <div>
+                <Input
+                  type="search"
+                  placeholder="Search..."
+                  className="md:w-[100px] lg:w-[300px]"
+                />
+              </div>
               <Menu />
             </div>
           </div>
