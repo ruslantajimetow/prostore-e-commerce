@@ -15,6 +15,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import Link from 'next/link';
+import Charts from './charts';
 
 export const metadata: Metadata = {
   title: 'Admin Overview',
@@ -84,7 +85,9 @@ export default async function AdminOverviewPage() {
           <CardHeader>
             <CardTitle>Overview</CardTitle>
           </CardHeader>
-          <CardContent>{/* CHART HERE */}</CardContent>
+          <CardContent>
+            <Charts data={{ salesData: summary.salesData }} />
+          </CardContent>
         </Card>
         <Card className="col-span-3">
           <CardHeader>
