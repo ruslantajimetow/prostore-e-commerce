@@ -22,9 +22,9 @@ model Product {
   description String
   images      String[]
   price       Decimal  @db.Decimal(12, 2)
-  rating      Decimal  @db.Decimal(3, 2)
+  rating      Decimal? @db.Decimal(3, 2)
   brand       String
-  numReviews  Int      @default(0)
+  numReviews  Int?     @default(0)
   stock       Int
   isFeatured  Boolean  @default(false)
   banner      String?
