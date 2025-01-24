@@ -30,7 +30,7 @@ export type Order = z.infer<typeof insertOrderSceham> & {
   createdAt: Date;
   isPaid: Boolean;
   paidAt: Date | null;
-  isdelivere: Boolean;
+  isDelivered: Boolean;
   deliveredAt: Date | null;
   orderitems: OrderItem[];
   user: { name: string; email: string };
