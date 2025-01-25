@@ -29,7 +29,9 @@ export default async function AdminProductsPage(props: {
     <div className="space-y-2">
       <div className="flex-between">
         <h1 className="h2-bold">Products</h1>
-        <Button size="sm">Create Product</Button>
+        <Button asChild size="sm">
+          <Link href="/admin/products/create">Create Product</Link>
+        </Button>
       </div>
 
       <Table>
