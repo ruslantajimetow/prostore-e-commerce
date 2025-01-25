@@ -13,14 +13,14 @@ export const DEFAULT_PAYMENT_METHOD =
 export const PAGE_SIZE = Number(process.env.PAGE_SIZE) || 12;
 
 export const PRODUCT_DEFAULT_VALUES = {
-  name: 'Test Product',
+  name: '',
   slug: '',
-  category: 'Cloths',
+  category: '',
   images: [],
-  brand: 'Polo',
-  description: 'Test Description',
-  price: '20',
-  stock: 5,
+  brand: '',
+  description: '',
+  price: '0',
+  stock: 0,
   rating: 0,
   numReviews: '0',
   isFeatured: false,
