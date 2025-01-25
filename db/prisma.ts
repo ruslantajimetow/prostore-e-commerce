@@ -24,7 +24,7 @@ export const prisma = new PrismaClient({ adapter }).$extends({
       },
       rating: {
         compute(product) {
-          return product.rating.toString();
+          if (product.rating !== null) return product.rating.toString();
         },
       },
     },

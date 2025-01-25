@@ -16,17 +16,18 @@ export const insertProductSchema = z.object({
   description: z
     .string()
     .min(3, { message: 'Description must be at least 3 characters long' }),
-  images: z
-    .array(z.string())
-    .min(1, { message: 'At least one image is required' }),
+  // images: z
+  //   .array(z.string())
+  //   .min(1, { message: 'At least one image is required' }),
   category: z
     .string()
     .min(3, { message: 'Category must be at least 3 characters long' }),
   price: currency,
   brand: z.string(),
   stock: z.coerce.number(),
-  isFeatured: z.boolean(),
-  banner: z.string().nullable(),
+  rating: z.coerce.number(),
+  // isFeatured: z.boolean(),
+  // banner: z.string().nullable(),
 });
 
 export const updateProductSchema = insertProductSchema.extend({
