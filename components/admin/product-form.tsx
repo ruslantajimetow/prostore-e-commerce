@@ -24,6 +24,7 @@ import { createProduct, updateProduct } from '@/lib/actions/product.actions';
 import { Card, CardContent } from '../ui/card';
 import Image from 'next/image';
 import { UploadButton } from '@/lib/uploadthing';
+import { Checkbox } from '../ui/checkbox';
 
 type CreateProductFormProps = {
   type: 'Create' | 'Update';
@@ -31,7 +32,7 @@ type CreateProductFormProps = {
   productId?: string;
 };
 
-export default function CreateProductForm({
+export default function ProductForm({
   type,
   product,
   productId,
@@ -89,8 +90,9 @@ export default function CreateProductForm({
   };
 
   const images = form.watch('images');
+  const isFeautured = form.watch('isFeatured');
+  const banner = form.watch('banner');
 
-  console.log(images);
   return (
     <Form {...form}>
       <form
@@ -300,8 +302,51 @@ export default function CreateProductForm({
             )}
           />
         </div>
-        <div className="upload-field flex flex-col gap-5 md:flex-row">
-          {/* {isfeatured} */}
+        <div className="upload-field">
+          Featured Product
+          <Card>
+            <CardContent className="space-y-2 mt-2 ">
+              <FormField
+                control={form.control}
+                name="isFeatured"
+                render={({ field }) => (
+                  <FormItem className="space-x-2 items-center">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel>Is Featured?</FormLabel>
+                  </FormItem>
+                )}
+              />
+              {isFeautured && banner && (
+                <Image
+                  src={banner}
+                  alt="banner image"
+                  className="w-full object-cover object-center rounded-sm"
+                  width={1920}
+                  height={680}
+                />
+              )}
+
+              {isFeautured && !banner && (
+                <UploadButton
+                  endpoint="imageUploader"
+                  onClientUploadComplete={(res: { url: string }[]) => {
+                    form.setValue('banner', res[0].url);
+                  }}
+                  onUploadError={(error: Error) => {
+                    toast({
+                      variant: 'destructive',
+                      description: `Error! ${error.message}`,
+                    });
+                  }}
+                />
+              )}
+            </CardContent>
+          </Card>
         </div>
         <div>
           <FormField

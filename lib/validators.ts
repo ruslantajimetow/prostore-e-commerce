@@ -26,8 +26,8 @@ export const insertProductSchema = z.object({
   brand: z.string(),
   stock: z.coerce.number(),
   rating: z.coerce.number(),
-  // isFeatured: z.boolean(),
-  // banner: z.string().nullable(),
+  isFeatured: z.boolean(),
+  banner: z.string().nullable(),
 });
 
 export const updateProductSchema = insertProductSchema.extend({

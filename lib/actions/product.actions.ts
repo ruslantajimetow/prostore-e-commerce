@@ -5,6 +5,7 @@ import { formatError } from '../utils';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { insertProductSchema, updateProductSchema } from '../validators';
+import { Product } from '@/types';
 
 // Get all products from DB
 export async function getProducts() {
@@ -23,6 +24,14 @@ export async function getProductByslug(slug: string) {
     where: { slug: slug },
   });
 }
+// Get a product by its ID
+export async function getProductById(productId: string) {
+  const data = await prisma.product.findFirst({
+    where: { id: productId },
+  });
+
+  return JSON.parse(JSON.stringify(data)) as Product;
+}
 
 // Get all products for admin
 export async function getAllProducts({
@@ -37,6 +46,7 @@ export async function getAllProducts({
   limit?: number;
 }) {
   const data = await prisma.product.findMany({
+    orderBy: { createdAt: 'desc' },
     skip: (page - 1) * limit,
     take: limit,
   });
