@@ -13,6 +13,8 @@ import { prisma } from '@/db/prisma';
 import { formatError } from '../utils';
 import { ShippingAddress } from '@/types';
 import { z } from 'zod';
+import { PAGE_SIZE } from '../constants';
+import { revalidatePath } from 'next/cache';
 
 export const signInAction = async (prevState: unknown, formData: FormData) => {
   try {
@@ -173,3 +175,46 @@ export const updateUserProfile = async (user: {
     };
   }
 };
+
+export async function getAllUsers({
+  page,
+  limit = PAGE_SIZE,
+}: {
+  page: number;
+  limit?: number;
+}) {
+  const data = await prisma.user.findMany({
+    skip: (page - 1) * limit,
+    take: limit,
+  });
+
+  const dataCount = await prisma.user.count();
+
+  return {
+    data,
+    totalPages: Math.ceil(dataCount / limit),
+  };
+}
+
+//delete user for admin
+export async function deleteUser(userId: string) {
+  try {
+    const existingUser = await prisma.user.findFirst({ where: { id: userId } });
+
+    if (!existingUser) throw new Error('User not found');
+
+    await prisma.user.delete({ where: { id: userId } });
+
+    revalidatePath('/admin/users');
+
+    return {
+      success: true,
+      message: 'User deleted successfully',
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    };
+  }
+}
