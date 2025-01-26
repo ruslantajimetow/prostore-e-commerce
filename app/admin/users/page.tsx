@@ -1,5 +1,6 @@
 import DeleteDialog from '@/components/shared/delete-dialog';
 import Pagination from '@/components/shared/pagination';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Table,
@@ -25,7 +26,7 @@ export default async function AdminUsersPage(props: {
   const users = await getAllUsers({ page: Number(page) });
   return (
     <div className="space-y-2">
-      <h2 className="h2-bold">Orders</h2>
+      <h2 className="h2-bold">Users</h2>
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
@@ -45,10 +46,16 @@ export default async function AdminUsersPage(props: {
                 </TableCell>
                 <TableCell className="text-center">{user.name}</TableCell>
                 <TableCell className="text-center">{user.email}</TableCell>
-                <TableCell className="text-center">{user.role}</TableCell>
+                <TableCell className="text-center">
+                  {user.role === 'admin' ? (
+                    <Badge variant="default">{user.role}</Badge>
+                  ) : (
+                    <Badge variant="outline">{user.role}</Badge>
+                  )}
+                </TableCell>
                 <TableCell className="flex items-center gap-2 justify-center">
                   <Button variant="outline" asChild>
-                    <Link href={`admin/users/${user.id}`}>Edit</Link>
+                    <Link href={`/admin/users/${user.id}`}>Edit</Link>
                   </Button>
                   <DeleteDialog id={user.id} action={deleteUser} />
                 </TableCell>
