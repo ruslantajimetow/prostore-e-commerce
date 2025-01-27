@@ -3,7 +3,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Menu from '@/components/shared/header/menu';
 import MainNav from './main-nav';
-import { Input } from '@/components/ui/input';
 import AdminSearch from './admin-search';
 
 export default function UserLayout({
