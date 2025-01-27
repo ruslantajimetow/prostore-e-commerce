@@ -6,6 +6,7 @@ import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { insertProductSchema, updateProductSchema } from '../validators';
 import { Product } from '@/types';
+import { Prisma } from '@prisma/client';
 
 // Get all products from DB
 export async function getProducts() {
@@ -45,7 +46,20 @@ export async function getAllProducts({
   category: string;
   limit?: number;
 }) {
+  const queryFilter: Prisma.ProductWhereInput =
+    query && query !== 'all'
+      ? {
+          name: {
+            contains: query,
+            mode: 'insensitive',
+          } as Prisma.StringFilter,
+        }
+      : {};
+
   const data = await prisma.product.findMany({
+    where: {
+      ...queryFilter,
+    },
     orderBy: { createdAt: 'desc' },
     skip: (page - 1) * limit,
     take: limit,

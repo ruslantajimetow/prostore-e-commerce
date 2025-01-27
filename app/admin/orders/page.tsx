@@ -21,18 +21,33 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminOrdersPage(props: {
-  searchParams: Promise<{ page: string }>;
+  searchParams: Promise<{ page: string; query: string }>;
 }) {
-  const { page = '1' } = await props.searchParams;
+  const { page = '1', query: searchText } = await props.searchParams;
 
   const session = await auth();
 
   if (session?.user.role !== 'admin') redirect('/');
 
-  const orders = await getAllOrders({ page: Number(page) });
+  const orders = await getAllOrders({ page: Number(page), query: searchText });
   return (
     <div className="space-y-2">
-      <h2 className="h2-bold">Orders</h2>
+      <div className="flex items-center gap-3">
+        <h1 className="h2-bold">Orders</h1>
+        {searchText && (
+          <div>
+            Filtered by{' '}
+            <i>
+              &quot;{searchText}&quot;{' '}
+              <Link href="/admin/products">
+                <Button variant="outline" size="sm">
+                  Clear
+                </Button>
+              </Link>
+            </i>
+          </div>
+        )}
+      </div>
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
