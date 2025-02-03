@@ -94,7 +94,14 @@ export async function getAllProducts({
       ...priceFilter,
       ...ratingFilter,
     },
-    orderBy: { createdAt: 'desc' },
+    orderBy:
+      sort === 'newest'
+        ? { createdAt: 'asc' }
+        : sort === 'rating'
+        ? { rating: 'desc' }
+        : sort === 'lowest'
+        ? { price: 'asc' }
+        : { price: 'desc' },
     skip: (page - 1) * limit,
     take: limit,
   });
