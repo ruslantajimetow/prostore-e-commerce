@@ -3,6 +3,7 @@
 import { Review } from '@/types';
 import Link from 'next/link';
 import { useState } from 'react';
+import ReviewForm from './review-form';
 
 export default function Reviewlist({
   userId,
@@ -19,7 +20,7 @@ export default function Reviewlist({
       {reviews.length === 0 && <p>No reviews yet</p>}
 
       {userId ? (
-        <>Review Form</>
+        <ReviewForm userId={userId} productId={productId} />
       ) : (
         <div>
           Please{' '}
