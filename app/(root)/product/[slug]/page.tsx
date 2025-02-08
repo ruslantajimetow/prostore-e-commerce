@@ -8,6 +8,7 @@ import { notFound } from 'next/navigation';
 import { getMyCart } from '@/lib/actions/cart.actions';
 import Reviewlist from './review-list';
 import { auth } from '@/auth';
+import Rating from '@/components/shared/product/rating';
 
 export default async function ProductDetail(props: {
   params: Promise<{ slug: string }>;
@@ -30,8 +31,12 @@ export default async function ProductDetail(props: {
               {product?.brand} {product?.category}
             </p>
             <h3 className="h3-bold">{product?.name}</h3>
-            <p>{product?.rating}</p>
-            <p>{product?.numReviews} reviews</p>
+            <Rating value={Number(product.rating)} />
+            <p>
+              {product?.numReviews > 1
+                ? `${product.numReviews} reviews`
+                : `${product.numReviews} review`}{' '}
+            </p>
             <div className="flex flex-col sm:items-start">
               <ProductPrice
                 value={Number(product?.price)}

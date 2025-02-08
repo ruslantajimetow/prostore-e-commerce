@@ -4,6 +4,7 @@ import Link from 'next/link';
 import React from 'react';
 import ProductPrice from './product-price';
 import { Product } from '@/types';
+import Rating from './rating';
 
 export default function ProductCard({ product }: { product: Product }) {
   return (
@@ -25,7 +26,7 @@ export default function ProductCard({ product }: { product: Product }) {
           <h2 className="text-sm font-medium">{product.name}</h2>
         </Link>
         <div className="flex-between">
-          <p>{product.rating} Stars</p>
+          <Rating value={Number(product.rating)} />
           {product.stock > 0 ? (
             <ProductPrice value={+product.price} />
           ) : (
