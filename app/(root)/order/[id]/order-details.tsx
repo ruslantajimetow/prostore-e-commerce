@@ -28,15 +28,18 @@ import {
   updateOrderToDelivered,
 } from '@/lib/actions/order.actions';
 import { useToast } from '@/hooks/use-toast';
+import StripePayment from './stripe-payment';
 
 export default function OrderDetails({
   order,
   paypalClientId,
   isAdmin,
+  stripeClientSecret,
 }: {
   order: Order;
   paypalClientId: string;
   isAdmin: boolean;
+  stripeClientSecret: string | null;
 }) {
   const {
     id,
@@ -245,6 +248,16 @@ export default function OrderDetails({
                     />
                   </PayPalScriptProvider>
                 </div>
+              )}
+
+              {/* Stripe payment */}
+
+              {!isPaid && paymentMethod === 'Stripe' && stripeClientSecret && (
+                <StripePayment
+                  price={Number(order.totalPrice) * 100}
+                  orderId={id}
+                  stripeClientSecret={stripeClientSecret}
+                />
               )}
 
               {/* Cash on Delivery */}
