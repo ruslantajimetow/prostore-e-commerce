@@ -83,3 +83,39 @@ export const createUpdateReview = async (
     return { success: false, message: formatError(error) };
   }
 };
+
+//Get all reviews for a product
+export const getReviews = async (productId: string) => {
+  const reviews = await prisma.review.findMany({
+    where: {
+      productId,
+    },
+    include: {
+      user: {
+        select: {
+          name: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
+  return { reviews };
+};
+
+// get a review for a specific user
+export const getReviewForUser = async (productId: string) => {
+  const session = await auth();
+  if (!session) {
+    throw new Error('Unauthorized');
+  }
+
+  return await prisma.review.findFirst({
+    where: {
+      productId,
+      userId: session.user.id,
+    },
+  });
+};
